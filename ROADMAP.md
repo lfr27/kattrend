@@ -23,6 +23,11 @@
 - [ ] Wire UI cart → Shopify cart → Shopify-hosted checkout (payments/PCI handled by Shopify).
 - [ ] Wire accounts → Shopify customer accounts.
 - [ ] Product pages: static + periodic revalidation (SEO); cart client-side.
+- [ ] **Wishlist:** keep the existing localStorage wishlist (`src/lib/wishlist.tsx`) for launch — it's a
+      custom feature (Shopify has no native wishlist) and works with no backend. *Later (optional):* sync
+      to the logged-in customer's Shopify account via **customer metafields** so it follows them across
+      devices (hybrid: localStorage for guests → merge into account on login). Update stored keys from
+      product slugs to Shopify product IDs/handles when connecting Shopify.
 
 ## Phase 3 — Go-live (when legally clear to sell)
 - [ ] Vercel → Domains → add `kattrend.com` + `www.kattrend.com` (Production).
