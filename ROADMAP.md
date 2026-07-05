@@ -20,7 +20,10 @@
 ## Phase 2 — Shopify commerce build (headless)
 - [ ] Connect Shopify Storefront API; store token in **Vercel env vars** (per-environment: dev store on `development`, live store on `main`).
 - [ ] Swap `src/data/catalogue.ts` → live products from Shopify.
-- [ ] Wire UI cart → Shopify cart → Shopify-hosted checkout (payments/PCI handled by Shopify).
+- [ ] **Cart/bag:** wire the header bag button (`src/components/layout/Header.tsx:141-146`, currently a
+      shell — no `onClick`, hardcoded "0 items") to the **Shopify Cart API**. Open a **cart drawer/slide-out**
+      (add/remove items, quantities, subtotal, and a live count badge like the wishlist ❤️), with a
+      **Checkout** button that redirects to **Shopify-hosted checkout** (payments/PCI handled by Shopify).
 - [ ] Wire accounts → Shopify customer accounts.
 - [ ] Product pages: static + periodic revalidation (SEO); cart client-side.
 - [ ] **Wishlist:** keep the existing localStorage wishlist (`src/lib/wishlist.tsx`) for launch — it's a
