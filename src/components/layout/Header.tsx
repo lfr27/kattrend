@@ -65,11 +65,11 @@ export function Header() {
       <header
         onMouseLeave={() => setMega(null)}
         className={cn(
-          "fixed left-0 right-0 z-[100] transition-[top,background,padding,border-color] duration-med ease-luxe",
+          "fixed left-0 right-0 z-[100] transition-[top,padding] duration-med ease-luxe",
           scrolled
             ? "top-0 bg-pearl/75 backdrop-blur-xl backdrop-saturate-150 border-b border-mist py-3.5"
             : "top-[38px] border-b border-transparent py-5",
-          mega && "bg-pearl/95 backdrop-blur-xl border-mist",
+          mega && "bg-pearl border-mist",
         )}
       >
         <div className="flex items-center justify-between px-gutter">
