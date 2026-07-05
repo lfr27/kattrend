@@ -11,6 +11,16 @@
 - ⚫ **Production `kattrend.com` intentionally dark** until go-live (not attached in Vercel; no apex DNS records yet).
 - Git flow: build on `development`, merge to `main` = production (go-live).
 
+## Internationalization (i18n) — infrastructure done
+- ✅ **next-intl** set up: Danish (default, clean URLs) + English (`/en`). Routes live under
+  `src/app/[locale]/`; config in `src/i18n/*` + `src/middleware.ts`. Single-flag DA/EN switcher in the header.
+- [ ] **Translate remaining copy to Danish** — only header strings (nav, announcement, switcher) are in
+  `messages/{da,en}.json` so far. Section/marketing/page copy is still hardcoded English in
+  `src/components/**` and pages; migrate each string into the message files as copy is finalised.
+- [ ] Product content translations come later from **Shopify** (Markets + Storefront API `@inContext`),
+  not from `messages/*` — don't translate `src/data/catalogue.ts` by hand.
+- [ ] Localize page/SEO metadata per locale (currently English in `[locale]/layout.tsx`).
+
 ## Phase 1 — Validation landing page (current)
 - [ ] Finalize landing page content for the validation/ad test.
 - [ ] Add email capture (newsletter signup) — measure signups / cost-per-email.
