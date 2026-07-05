@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { img } from "@/lib/utils";
@@ -65,9 +65,9 @@ export function Hero() {
           <Link href="/collections" className="btn btn-ghost">
             Shop Collection
           </Link>
-          <Link href="/marketplace" className="btn btn-ghost">
+         {/*  <Link href="/marketplace" className="btn btn-ghost">
             Explore Resale Market
-          </Link>
+          </Link> */}
         </motion.div>
       </motion.div>
 

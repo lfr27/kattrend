@@ -128,11 +128,12 @@ export const designers: Designer[] = [
   {
     slug: "atelier-noor",
     name: "Atelier Noor",
-    origin: "Milan",
+    origin: "Poland",
     discipline: "Stone & monolith",
-    bio: "A Milanese atelier devoted to stone. Atelier Noor sources travertine and marble offcuts from Italian quarries, giving noble material a second life as quiet, weighty furniture.",
+    bio: "A Polish atelier devoted to stone. Atelier Noor sources travertine and marble offcuts from Italian quarries, giving noble material a second life as quiet, weighty furniture.",
     image: "photo-1583511655857-d19b40a7a54e",
   },
+  
 ];
 
 // ------------------------------------------------------------

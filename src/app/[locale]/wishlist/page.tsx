@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useWishlist } from "@/lib/wishlist";
 import { products } from "@/data/catalogue";
 import { ProductGrid } from "@/components/product/ProductGrid";

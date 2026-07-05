@@ -1,9 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
+import { useLocale, useTranslations } from "next-intl";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { useWishlist } from "@/lib/wishlist";
 import { collections, designers } from "@/data/catalogue";
@@ -17,12 +19,16 @@ import {
 } from "@/components/ui/icons";
 import { luxeEase } from "@/lib/motion";
 
-const navLinks = [
-  { label: "Collections", href: "/collections", mega: "collections" },
-  //{ label: "Resales", href: "/marketplace" },
-  
-  { label: "Designers", href: "/designers", mega: "designers" },
-  { label: "Journal", href: "/journal" },
+// `key` maps to a translation key in the "Header" namespace.
+const navLinks: ReadonlyArray<{
+  key: "collections" | "designers" | "journal";
+  href: string;
+  mega?: string;
+}> = [
+  { key: "collections", href: "/collections", mega: "collections" },
+  //{ key: "resale", href: "/marketplace" },
+  { key: "designers", href: "/designers", mega: "designers" },
+  { key: "journal", href: "/journal" },
 ];
 
 export function Header() {
@@ -38,10 +44,12 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { count } = useWishlist();
   const pathname = usePathname();
+  const t = useTranslations("Header");
 
   // Only the homepage renders a dark full-bleed hero behind the transparent
   // header. Every other route has a light background at the top, so the header
   // must use dark text there to stay readable before any scrolling.
+  // (usePathname from next-intl is locale-agnostic, so "/" matches both locales.)
   const isHome = pathname === "/";
 
   useEffect(() => {
@@ -71,8 +79,8 @@ export function Header() {
     <>
       {/* Announcement */}
       <div className="bg-noir text-pearl text-center text-[10.5px] uppercase tracking-wide font-light py-2.5 px-4 whitespace-nowrap overflow-hidden text-ellipsis">
-        Free shipping on orders over 2,500 kr. —{" "}
-        <span className="text-champagne">Shipping to all Denmark</span>
+        {t("announcement")} —{" "}
+        <span className="text-champagne">{t("announcementHighlight")}</span>
       </div>
 
       <header
@@ -89,7 +97,7 @@ export function Header() {
           {/* Left nav (desktop) */}
           <nav className="hidden md:flex flex-1 items-center gap-8">
             {navLinks.map((l) => (
-              <div key={l.label} onMouseEnter={() => setMega(l.mega ?? null)}>
+              <div key={l.key} onMouseEnter={() => setMega(l.mega ?? null)}>
                 <Link
                   href={l.href}
                   className={cn(
@@ -97,7 +105,7 @@ export function Header() {
                     dark ? "text-white" : "text-ink",
                   )}
                 >
-                  {l.label}
+                  {t(l.key)}
                 </Link>
               </div>
             ))}
@@ -106,7 +114,7 @@ export function Header() {
           {/* Mobile menu toggle */}
           <button
             className="md:hidden flex-1"
-            aria-label="Open menu"
+            aria-label={t("openMenu")}
             onClick={() => setMobileOpen(true)}
           >
             <MenuIcon
@@ -132,8 +140,9 @@ export function Header() {
 
           {/* Right icons */}
           <div className="flex flex-1 items-center justify-end gap-5">
+            <LocaleSwitcher dark={dark} />
             <button
-              aria-label="Search"
+              aria-label={t("search")}
               onClick={() => setSearchOpen(true)}
               className={cn(
                 "transition-opacity hover:opacity-60",
@@ -144,7 +153,7 @@ export function Header() {
             </button>
             <Link
               href="/account"
-              aria-label="Account"
+              aria-label={t("account")}
               className={cn(
                 "hidden sm:block hover:opacity-60",
                 dark ? "text-white" : "text-ink",
@@ -154,7 +163,7 @@ export function Header() {
             </Link>
             <Link
               href="/wishlist"
-              aria-label={`Wishlist, ${count} items`}
+              aria-label={`${t("wishlist")}, ${count}`}
               className={cn(
                 "relative hover:opacity-60",
                 dark ? "text-white" : "text-ink",
@@ -168,7 +177,7 @@ export function Header() {
               )}
             </Link>
             <button
-              aria-label="Bag, 0 items"
+              aria-label={`${t("bag")}, 0`}
               className={cn(
                 "relative hover:opacity-60",
                 dark ? "text-white" : "text-ink",
@@ -218,6 +227,48 @@ export function Header() {
       <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
       <MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} />
     </>
+  );
+}
+
+// ------------------------------------------------------------
+// Locale switcher (flags: DA / EN)
+// ------------------------------------------------------------
+const LOCALE_FLAGS: Record<string, string> = {
+  da: "/images/dk.png",
+  en: "/images/uk.png",
+};
+
+function LocaleSwitcher({ dark }: { dark: boolean }) {
+  const locale = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
+  const t = useTranslations("LocaleSwitcher");
+
+  // Two-language toggle: show the flag of the CURRENT language; clicking swaps
+  // to the other language (and the flag updates to reflect the new one).
+  const other =
+    routing.locales.find((l) => l !== locale) ?? routing.defaultLocale;
+
+  return (
+    <button
+      onClick={() => router.replace(pathname, { locale: other })}
+      aria-label={t("switchTo", { language: t(other as "da" | "en") })}
+      title={t("switchTo", { language: t(other as "da" | "en") })}
+      className={cn(
+        "relative block h-[13px] w-[20px] overflow-hidden rounded-[1px] opacity-90 transition-opacity hover:opacity-100",
+        dark
+          ? "ring-1 ring-white/30 ring-offset-0"
+          : "ring-1 ring-ink/15 ring-offset-0",
+      )}
+    >
+      <Image
+        src={LOCALE_FLAGS[locale]}
+        alt={t(locale as "da" | "en")}
+        fill
+        sizes="20px"
+        className="object-cover"
+      />
+    </button>
   );
 }
 
@@ -305,6 +356,13 @@ function SearchDrawer({
 // Mobile menu
 // ------------------------------------------------------------
 function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const t = useTranslations("Header");
+  const items: ReadonlyArray<{ key: string; href: string }> = [
+    ...navLinks.map((l) => ({ key: l.key, href: l.href })),
+    { key: "authentication", href: "/authentication" },
+    { key: "account", href: "/account" },
+  ];
+
   return (
     <AnimatePresence>
       {open && (
@@ -324,13 +382,9 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
             </button>
           </div>
           <nav className="px-gutter mt-s4 flex flex-col">
-            {[
-              ...navLinks,
-              { label: "Authentication", href: "/authentication" },
-              { label: "Account", href: "/account" },
-            ].map((l, i) => (
+            {items.map((l, i) => (
               <motion.div
-                key={l.label}
+                key={l.key}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 + i * 0.06, ease: luxeEase }}
@@ -340,7 +394,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
                   onClick={onClose}
                   className="block border-b border-white/10 py-5 font-display text-3xl font-light"
                 >
-                  {l.label}
+                  {t(l.key)}
                 </Link>
               </motion.div>
             ))}

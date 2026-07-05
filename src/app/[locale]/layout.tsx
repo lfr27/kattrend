@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
+import { notFound } from "next/navigation";
+import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { setRequestLocale } from "next-intl/server";
+import "../globals.css";
+import { routing } from "@/i18n/routing";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { WishlistProvider } from "@/lib/wishlist";
@@ -8,8 +12,8 @@ import { WishlistProvider } from "@/lib/wishlist";
 // Self-hosted variable fonts — no runtime dependency on Google Fonts.
 const cormorant = localFont({
   src: [
-    { path: "../../public/fonts/CormorantGaramond-Variable.ttf", weight: "300 600", style: "normal" },
-    { path: "../../public/fonts/CormorantGaramond-Italic-Variable.ttf", weight: "300 600", style: "italic" },
+    { path: "../../../public/fonts/CormorantGaramond-Variable.ttf", weight: "300 600", style: "normal" },
+    { path: "../../../public/fonts/CormorantGaramond-Italic-Variable.ttf", weight: "300 600", style: "italic" },
   ],
   variable: "--font-cormorant",
   display: "swap",
@@ -17,8 +21,8 @@ const cormorant = localFont({
 
 const jost = localFont({
   src: [
-    { path: "../../public/fonts/Jost-Variable.ttf", weight: "300 700", style: "normal" },
-    { path: "../../public/fonts/Jost-Italic-Variable.ttf", weight: "300 700", style: "italic" },
+    { path: "../../../public/fonts/Jost-Variable.ttf", weight: "300 700", style: "normal" },
+    { path: "../../../public/fonts/Jost-Italic-Variable.ttf", weight: "300 700", style: "italic" },
   ],
   variable: "--font-jost",
   display: "swap",
@@ -72,19 +76,40 @@ const orgJsonLd = {
   knowsAbout: ["Luxury furniture", "Interior design", "Pet furniture", "Sustainable resale"],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+// Pre-render both locales at build time (keeps the site statically generated).
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export default async function LocaleLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
+  // Enable static rendering for this locale.
+  setRequestLocale(locale);
+
   return (
-    <html lang="en" className={`${cormorant.variable} ${jost.variable}`}>
+    <html lang={locale} className={`${cormorant.variable} ${jost.variable}`}>
       <body>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
         />
-        <WishlistProvider>
-          <Header />
-          <main id="main">{children}</main>
-          <Footer />
-        </WishlistProvider>
+        <NextIntlClientProvider>
+          <WishlistProvider>
+            <Header />
+            <main id="main">{children}</main>
+            <Footer />
+          </WishlistProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

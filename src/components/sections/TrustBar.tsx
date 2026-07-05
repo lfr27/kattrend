@@ -2,9 +2,9 @@ import { ShieldCheck, Certificate, Truck, Leaf, Lock } from "@/components/ui/ico
 
 const items = [
   { icon: ShieldCheck, label: "Authentication Guarantee" },
-  { icon: Certificate, label: "Certified Pre-Owned" },
-  { icon: Truck, label: "White-Glove Delivery" },
-  { icon: Leaf, label: "Sustainable by Design" },
+  //{ icon: Certificate, label: "Certified Pre-Owned" },
+  { icon: Truck, label: "Free shipping after 2.500 kr" },
+  { icon: Leaf, label: "shipping all denmark" },
   { icon: Lock, label: "Secure Checkout" },
 ];
 
