@@ -28,6 +28,12 @@ const navLinks = [
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mega, setMega] = useState<string | null>(null);
+  // The pearl header "surface" (solid background + dark text) must stay visible
+  // for the whole time a mega panel is on screen, including its exit animation.
+  // `mega` flips to null the instant the pointer leaves, but the panel takes
+  // ~0.35s to animate out — so we keep the surface until onExitComplete fires,
+  // otherwise the closing panel flashes over the dark hero on the homepage.
+  const [surfaceOpen, setSurfaceOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { count } = useWishlist();
@@ -52,7 +58,14 @@ export function Header() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  const dark = isHome && !scrolled && !mega;
+  // Show the surface as soon as a menu opens; it is hidden again only once the
+  // panel has finished animating out (see onExitComplete on AnimatePresence).
+  useEffect(() => {
+    if (mega) setSurfaceOpen(true);
+  }, [mega]);
+
+  const surface = !!mega || surfaceOpen;
+  const dark = isHome && !scrolled && !surface;
 
   return (
     <>
@@ -69,7 +82,7 @@ export function Header() {
           scrolled
             ? "top-0 bg-pearl/75 backdrop-blur-xl backdrop-saturate-150 border-b border-mist py-3.5"
             : "top-[38px] border-b border-transparent py-5",
-          mega && "bg-pearl border-mist",
+          surface && "bg-pearl border-mist",
         )}
       >
         <div className="flex items-center justify-between px-gutter">
@@ -167,7 +180,7 @@ export function Header() {
         </div>
 
         {/* Mega menu */}
-        <AnimatePresence>
+        <AnimatePresence onExitComplete={() => setSurfaceOpen(false)}>
           {mega && (
             <motion.div
               initial={{ opacity: 0, y: -8 }}
