@@ -12,7 +12,7 @@ export function MaisonStatement() {
           <p className="mx-auto max-w-[18ch] font-display text-display-md font-light text-balance text-ink">
             A home is shaped not only by the objects we choose, but by the lives
             that move quietly around them.{" "}
-            <em className="italic text-champagne-deep">Furniture</em> becomes
+            <em className="italic text-champagne-deep">Kattrend</em> becomes
             part of the room, and part of the animal’s daily rituals.
           </p>
         </Reveal>
