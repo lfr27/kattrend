@@ -44,28 +44,41 @@ export function Hero() {
           variants={staggerItem}
           className="eyebrow kicker mb-s3 !text-white/75 before:bg-champagne"
         >
-          The Maison of Feline Design
+          The Feline Atelier
         </motion.span>
+
         <motion.h1
+          variants={staggerItem}
+          className="max-w-[15ch] font-display text-display-2xl font-light text-white"
+        >
+          Designed for Cats.
+          <br />
+          <em className="italic text-champagne">Made for Homes.</em>
+        </motion.h1>
+        
+       {/*  <motion.h1
           variants={staggerItem}
           className="max-w-[15ch] font-display text-display-2xl font-light text-white"
         >
           Furniture Worthy
           <br />
           of <em className="italic text-champagne">Nine Lives</em>
-        </motion.h1>
+        </motion.h1> */}
+
+
+
         <motion.p
           variants={staggerItem}
           className="my-s4 max-w-[48ch] text-[clamp(15px,1.4vw,18px)] font-light leading-relaxed text-white/85"
         >
-          Luxury cat furniture for beautiful homes — where architectural form meets the instinct of
-          the feline. Designed by ateliers, certified for life.
+          Furniture of uncompromising craft — designed to belong in the room,
+          built to be lived on.
         </motion.p>
         <motion.div variants={staggerItem} className="flex flex-wrap gap-s2">
           <Link href="/collections" className="btn btn-ghost">
             Shop Collection
           </Link>
-         {/*  <Link href="/marketplace" className="btn btn-ghost">
+          {/*  <Link href="/marketplace" className="btn btn-ghost">
             Explore Resale Market
           </Link> */}
         </motion.div>
