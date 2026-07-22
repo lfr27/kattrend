@@ -1,14 +1,14 @@
 /* Kattrend — holding / landing page styles (site otherwise on hold). */
 :root {
   --velvet: #16130F;
-  --panel: #1a1914;
+  --panel: #1A1714;
   --line: #2A251F;
-  --offwhite: #f3eced;
+  --offwhite: #F3F1EC;
   --ecru: #D5CEBF;
   --greige: #8D8678;
   --oxblood: #8A3B2E;
   --oxdark: #6F2F24;
-  --tint: #c99b9b;
+  --tint: #C9A99B;
   --serif: var(--font-newsreader), Georgia, serif;
   --sans: var(--font-schibsted), system-ui, Arial, sans-serif;
   --mono: var(--font-spline-mono), ui-monospace, monospace;
