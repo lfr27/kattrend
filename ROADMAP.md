@@ -15,16 +15,25 @@
 - ⚫ **Production `kattrend.com` intentionally dark** until go-live (not attached in Vercel; no apex DNS records yet).
 - Git flow: build on `development`, merge to `main` = production (go-live).
 
-## Internationalization (i18n) — archived, to be rebuilt
-- ⚫ The **next-intl** setup (Danish default + English `/en`, routes under `src/app/[locale]/`,
-  config in `src/i18n/*` + `src/middleware.ts`, `messages/{da,en}.json`, header DA/EN switcher) was
-  part of the full build and has been **removed** from this branch. It's preserved on
-  `archive/full-site` and will be reintroduced with the commerce build.
-- [ ] **Translate copy to Danish** on rebuild — migrate hardcoded English UI strings into the
-  message files as copy is finalised.
+## Internationalization (i18n)
+- ✅ **Landing page is bilingual** (`language-switcher` branch): **English default at `/`**, Danish at
+  `/da`, via an optional catch-all `src/app/[[...lang]]/` route. UI copy lives in a typed dictionary
+  (`src/app/i18n.ts`) — no i18n library, right-sized for a single page. A small flag switcher in the nav
+  shows the **current** page's flag (UK on English, 🇩🇰 on Danish) and links to the other locale.
+  Per-locale `<html lang>`, `<title>`/`description`, canonical and hreflang alternates are all generated;
+  the sitemap lists both locales. This is a lighter, from-scratch replacement for the archived
+  **next-intl** setup (`src/app/[locale]/` + `src/middleware.ts` + `messages/{da,en}.json`, preserved on
+  `archive/full-site`).
+- [ ] **When the store lands (Phase 2), migrate the routing shell** from `[[...lang]]` (optional
+  catch-all — ideal for one page, awkward once there are many routes) to a required **`[locale]` segment
+  + `middleware.ts`**, the standard shape once `/products`, `/collections`, `/cart`, etc. exist.
+  **URLs stay identical** (`/` English, `/da` Danish), so no broken links or lost SEO; the dictionary,
+  components and hreflang logic carry over. It's a well-trodden migration, not a rewrite — nothing about
+  the current setup blocks headless Shopify (it's the same Next.js App Router + Vercel stack Shopify's
+  headless reference is built on).
 - [ ] Product content translations come later from **Shopify** (Markets + Storefront API `@inContext`),
-  not from `messages/*` — don't translate `src/data/catalogue.ts` by hand.
-- [ ] Localize page/SEO metadata per locale (currently English in `[locale]/layout.tsx`).
+  **not** from `src/app/i18n.ts` — keep UI chrome in the dictionary; let Shopify own product/catalogue
+  strings and currency (DKK vs EUR).
 
 ## Phase 1 — Validation landing page (current)
 - [ ] Finalize landing page content for the validation/ad test.

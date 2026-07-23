@@ -5,8 +5,9 @@
 // player, no external branding. The film autoplays muted and loops; the
 // controls let a visitor take over and unmute.
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import type { Dictionary } from "./i18n";
 
-export default function FilmPlayer() {
+export default function FilmPlayer({ labels }: { labels: Dictionary["player"] }) {
   const frameRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -94,7 +95,7 @@ export default function FilmPlayer() {
         loop
         playsInline
         preload="auto"
-        aria-label="Kattrend introduction film"
+        aria-label={labels.filmAria}
         onClick={togglePlay}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
@@ -103,7 +104,7 @@ export default function FilmPlayer() {
         onLoadedMetadata={syncVolume}
       >
         <source src="/cat.mp4" type="video/mp4" />
-        Watch our introduction at kattrend.com
+        {labels.fallback}
       </video>
 
       {!playing && (
@@ -111,7 +112,7 @@ export default function FilmPlayer() {
           type="button"
           className="film-poster"
           onClick={togglePlay}
-          aria-label="Play film"
+          aria-label={labels.play}
         >
           <span className="film-poster-ring">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -126,7 +127,7 @@ export default function FilmPlayer() {
           type="button"
           className="vbtn"
           onClick={togglePlay}
-          aria-label={playing ? "Pause film" : "Play film"}
+          aria-label={playing ? labels.pause : labels.play}
         >
           {playing ? (
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -148,7 +149,7 @@ export default function FilmPlayer() {
           step={0.001}
           value={progress}
           onChange={onSeek}
-          aria-label="Seek"
+          aria-label={labels.seek}
           style={{ background: fill(seekPct) }}
         />
 
@@ -156,7 +157,7 @@ export default function FilmPlayer() {
           type="button"
           className="vbtn"
           onClick={toggleMute}
-          aria-label={muted || volume === 0 ? "Unmute" : "Mute"}
+          aria-label={muted || volume === 0 ? labels.unmute : labels.mute}
         >
           {muted || volume === 0 ? (
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -191,7 +192,7 @@ export default function FilmPlayer() {
           step={0.01}
           value={muted ? 0 : volume}
           onChange={onVolume}
-          aria-label="Volume"
+          aria-label={labels.volume}
           style={{ background: fill(volPct) }}
         />
 
@@ -199,7 +200,7 @@ export default function FilmPlayer() {
           type="button"
           className="vbtn"
           onClick={toggleFullscreen}
-          aria-label={fullscreen ? "Exit fullscreen" : "Fullscreen"}
+          aria-label={fullscreen ? labels.exitFullscreen : labels.fullscreen}
         >
           {fullscreen ? (
             <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
