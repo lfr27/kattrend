@@ -44,8 +44,31 @@ nav { border-bottom: 1px solid var(--line); }
   letter-spacing: .26em;
   padding-left: .26em;
 }
+.nv-right { display: flex; align-items: center; gap: 18px; }
 .nv a.mail { font-size: 14px; text-decoration: none; letter-spacing: .04em; }
 .nv a.mail:hover { text-decoration: underline; }
+
+/* language switcher — a single small flag linking to the other locale */
+.lang {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+  border-radius: 4px;
+  opacity: .8;
+  transition: opacity .2s ease, transform .2s ease;
+}
+.lang:hover { opacity: 1; transform: translateY(-1px); }
+.lang img {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+}
+@media (max-width: 520px) {
+  .nv-right { gap: 12px; }
+  .nv a.mail { font-size: 13px; }
+}
 
 /* hero */
 .hero { position: relative; padding: 110px 0 90px; overflow: hidden; }
