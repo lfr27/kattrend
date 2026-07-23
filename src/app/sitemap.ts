@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 const BASE = "https://kattrend.com";
 
-// While the site is on hold, only the single landing page is live.
-// The full route map is preserved in git history / `src/app/_onhold`.
+// The site is a single landing page. The previously-built full site was removed;
+// it's preserved on the `archive/full-site` branch and in git history.
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
