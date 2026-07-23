@@ -1,5 +1,7 @@
 // Kattrend holding page — the single, only route while the full site is on hold.
 // The full site is parked under `src/app/_onhold` (rename back to `[locale]` to restore).
+import FilmPlayer from "./FilmPlayer";
+
 export default function HoldingPage() {
   return (
     <div className="page">
@@ -41,20 +43,7 @@ export default function HoldingPage() {
           <p className="eyebrow">Founder introduction</p>
           <h2 className="sec-title">A short word on who we are</h2>
 
-          <div className="frame">
-            <video
-              className="film-video"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              aria-label="Kattrend introduction film"
-            >
-              <source src="/cat.mp4" type="video/mp4" />
-              Watch our introduction at kattrend.com
-            </video>
-          </div>
+          <FilmPlayer />
         </div>
       </section>
 

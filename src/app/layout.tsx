@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Newsreader, Schibsted_Grotesk, Spline_Sans_Mono } from "next/font/google";
+import { Noto_Serif, Schibsted_Grotesk, Spline_Sans_Mono } from "next/font/google";
 import "./holding.css";
 
 // Fonts are downloaded and self-hosted at build time (no runtime Google dependency).
-const newsreader = Newsreader({
+const notoSerif = Noto_Serif({
   subsets: ["latin"],
   weight: ["400", "500"],
   style: ["normal", "italic"],
-  variable: "--font-newsreader",
+  variable: "--font-noto-serif",
   display: "swap",
 });
 
@@ -56,7 +56,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${newsreader.variable} ${schibsted.variable} ${splineMono.variable}`}
+      className={`${notoSerif.variable} ${schibsted.variable} ${splineMono.variable}`}
     >
       <body>{children}</body>
     </html>
