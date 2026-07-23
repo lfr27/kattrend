@@ -1,112 +1,86 @@
 # KATTREND
 
-**The Maison of Feline Design** — a production-ready luxury e-commerce platform for new, limited-edition, and certified pre-owned designer cat furniture.
+**The Maison of Feline Design** — premium, architectural cat furniture from Aalborg, Denmark.
 
-Built to stand alongside Chanel, Saint Laurent, Celine, Apple, and Net-a-Porter in visual and experiential quality.
+This repository currently hosts the **Kattrend holding page**: a single dark landing page,
+live while the brand lines up manufacturing.
+
+> The previously-built full e-commerce platform (marketplace, collections, product pages,
+> designers, journal, wishlist, i18n, …) has been **removed** from this branch. It is
+> preserved on the **`archive/full-site`** branch and in git history.
 
 ---
 
 ## Stack
 
-- **Next.js 15** (App Router, React 19) — static-generated routes
+- **Next.js 15** (App Router, React 19) — statically generated
 - **TypeScript** (strict)
-- **Tailwind CSS** — design system encoded as tokens
-- **Framer Motion** — refined, slow, scroll-triggered motion
-- Self-hosted variable fonts (no Google Fonts runtime dependency)
+- Plain CSS with design tokens in `src/app/holding.css` (no Tailwind)
+- Fonts self-hosted at build time via `next/font/google` (Noto Serif, Schibsted Grotesk,
+  Spline Sans Mono) — no runtime Google dependency
 
 ## Getting started
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
-npm run build    # production build
-npm run start    # serve production build
+npm run dev        # http://localhost:3000
+npm run build      # production build
+npm run start      # serve production build
 npm run type-check
+npm run lint
 ```
 
 Node 18.18+ required (developed on Node 22).
 
 ---
 
-## Architecture
+## Structure
 
 ```
-src/
-├── app/                      # App Router routes (all statically generated)
-│   ├── layout.tsx            # Fonts, SEO metadata, JSON-LD, providers
-│   ├── page.tsx              # Homepage
-│   ├── collections/          # Index + [slug] detail (filterable)
-│   ├── product/[slug]/       # PDP — gallery, add-to-bag, related, JSON-LD
-│   ├── marketplace/          # Certified resale platform + process
-│   ├── designers/            # Index + [slug] detail
-│   ├── journal/              # Editorial index + [slug] article
-│   ├── wishlist/             # Live wishlist (context-driven)
-│   ├── account/              # Sign-in / register
-│   ├── authentication/       # Authentication services
-│   ├── sitemap.ts / robots.ts
-│   └── not-found.tsx
-├── components/
-│   ├── layout/               # Header (mega-menu, search, mobile), Footer, PageHeader
-│   ├── sections/             # Homepage sections (Hero, Marketplace, BrandStory, …)
-│   ├── product/              # ProductCard, ProductGrid, QuickView, ProductDetail, FilterableGrid
-│   └── ui/                   # Reveal, icons, primitives
-├── data/catalogue.ts         # Typed single source of truth (products, collections, …)
-├── lib/
-│   ├── utils.ts              # cn(), img(), formatPrice()
-│   ├── motion.ts             # Shared Framer Motion variants + easing
-│   └── wishlist.tsx          # Wishlist context (localStorage-persisted)
-└── styles/ (globals in app/globals.css)
+src/app/
+├── layout.tsx        # Root layout: fonts, SEO metadata, viewport (dark theme)
+├── page.tsx          # The holding / landing page — the only route
+├── FilmPlayer.tsx    # Self-hosted founder film with custom controls (client component)
+├── holding.css       # All landing-page styles (design tokens + layout)
+├── icon.svg          # Favicon / brand mark
+├── robots.ts         # robots.txt
+└── sitemap.ts        # sitemap.xml (single route: /)
+
+public/
+└── cat.mp4           # Founder film
 ```
 
-### Adding a product
+The only route is `/`; `robots.txt` and `sitemap.xml` reflect that single page.
 
-Append to the `products` array in `src/data/catalogue.ts`. Routes, sitemap,
-related-product logic, and listings update automatically.
+---
+
+## The film
+
+`FilmPlayer.tsx` wraps a self-hosted `<video>` (`public/cat.mp4`) with custom, brand-styled
+controls: play/pause, seek, mute + volume, and fullscreen, plus a play-invite overlay while
+paused. Autoplay/muted are currently disabled (the film starts paused). Swap the film by
+replacing `public/cat.mp4`.
 
 ---
 
 ## Design system
 
-Encoded in `tailwind.config.ts` and `app/globals.css`.
-
-**Colour** — luxury monochrome. `noir #0A0A0A`, `ink #161616`, `graphite`,
-`ash`, `mist`, `pearl #F6F5F3`, `ivory`, `paper`, with a single metallic accent:
-`champagne #C9BBA0` (and `champagne-deep #A6926E` for text on light).
-
-**Type** — Cormorant Garamond (high-contrast display serif, used light) +
-Jost (geometric sans, Futura lineage) for body/UI. Editorial scale from
-`display-2xl` down.
-
-**Spacing** — 8pt base (`s1`–`s8`) plus fluid `gutter`.
-
-**Motion** — one shared easing `cubic-bezier(0.22, 1, 0.36, 1)`. Slow, confident,
-never flashy. All reveals and ambient motion respect `prefers-reduced-motion`.
+Encoded as CSS custom properties at the top of `src/app/holding.css` — a dark editorial
+palette (velvet `#16130F`, offwhite `#F3F1EC`, ecru, greige, with an oxblood `#8A3B2E`
+accent). Serif in Noto Serif; UI/sans in Schibsted Grotesk; mono in Spline Sans Mono. All
+motion respects `prefers-reduced-motion`.
 
 ---
 
-## Images
+## Bringing the full site back
 
-Image URLs are centralised in `img()` (`src/lib/utils.ts`) and stream from the
-Unsplash CDN in production, presented monochrome via CSS. For a fully offline
-preview, set `NEXT_PUBLIC_USE_LOCAL_IMAGES=1` and provide bundled placeholders
-under `public/placeholders/` keyed by short image id.
+The complete platform lives on the `archive/full-site` branch. To restore any part:
 
-Swap in real product photography by replacing the image ids in
-`src/data/catalogue.ts` (or pointing `img()` at your own asset host / CDN).
+```bash
+git checkout archive/full-site -- <path>
+```
 
----
-
-## Production notes
-
-- All routes are statically generated (SSG) — fast TTFB, CDN-cacheable.
-- Per-page metadata, OpenGraph, Twitter cards, and `Product` / `Article` /
-  `OnlineStore` JSON-LD are in place.
-- `sitemap.xml` and `robots.txt` are generated from the catalogue.
-- Accessibility: semantic landmarks, visible keyboard focus, labelled controls,
-  reduced-motion fallbacks.
-- Wishlist is client-side (localStorage). Wire to an account backend for
-  cross-device persistence.
-- Cart / checkout are represented at the UI level; integrate a commerce backend
-  (e.g. Shopify, Stripe, or a headless platform) to transact.
+Forward plans (validation landing → headless Shopify commerce) are in
+[`ROADMAP.md`](./ROADMAP.md).
 
 © 2026 KATTREND.

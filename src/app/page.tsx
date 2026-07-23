@@ -1,5 +1,5 @@
-// Kattrend holding page — the single, only route while the full site is on hold.
-// The full site is parked under `src/app/_onhold` (rename back to `[locale]` to restore).
+// Kattrend holding page — the single, only route for the site.
+// The previously-built full site was removed; it lives on the `archive/full-site` branch.
 import FilmPlayer from "./FilmPlayer";
 
 export default function HoldingPage() {

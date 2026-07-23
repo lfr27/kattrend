@@ -3,20 +3,25 @@
 > Actionable checklist for taking KATTREND from staging to a live, secure store.
 > Background/strategy lives in [`kattrend-project-brief.md`](./kattrend-project-brief.md).
 >
-> **Last updated:** 5 July 2026
+> **Last updated:** 23 July 2026
 
 ## Current status
+- ⚫ **Scope:** the full e-commerce build was removed on 2026-07-23; the repo is now just the
+  Phase 1 validation landing page. The full build (components, i18n, catalogue, wishlist, …) is
+  preserved on the **`archive/full-site`** branch — every code path referenced in the later phases
+  below lives there until it's rebuilt.
 - ✅ Frontend deployed on **Vercel** (host decision made — Vercel over Amplify/Simply).
 - ✅ **Staging live** at `dev.kattrend.com` → auto-deploys on every push to `development`.
 - ⚫ **Production `kattrend.com` intentionally dark** until go-live (not attached in Vercel; no apex DNS records yet).
 - Git flow: build on `development`, merge to `main` = production (go-live).
 
-## Internationalization (i18n) — infrastructure done
-- ✅ **next-intl** set up: Danish (default, clean URLs) + English (`/en`). Routes live under
-  `src/app/[locale]/`; config in `src/i18n/*` + `src/middleware.ts`. Single-flag DA/EN switcher in the header.
-- [ ] **Translate remaining copy to Danish** — only header strings (nav, announcement, switcher) are in
-  `messages/{da,en}.json` so far. Section/marketing/page copy is still hardcoded English in
-  `src/components/**` and pages; migrate each string into the message files as copy is finalised.
+## Internationalization (i18n) — archived, to be rebuilt
+- ⚫ The **next-intl** setup (Danish default + English `/en`, routes under `src/app/[locale]/`,
+  config in `src/i18n/*` + `src/middleware.ts`, `messages/{da,en}.json`, header DA/EN switcher) was
+  part of the full build and has been **removed** from this branch. It's preserved on
+  `archive/full-site` and will be reintroduced with the commerce build.
+- [ ] **Translate copy to Danish** on rebuild — migrate hardcoded English UI strings into the
+  message files as copy is finalised.
 - [ ] Product content translations come later from **Shopify** (Markets + Storefront API `@inContext`),
   not from `messages/*` — don't translate `src/data/catalogue.ts` by hand.
 - [ ] Localize page/SEO metadata per locale (currently English in `[locale]/layout.tsx`).

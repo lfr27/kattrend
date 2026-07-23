@@ -2,7 +2,7 @@
   "name": "kattrend",
   "version": "1.0.0",
   "private": true,
-  "description": "KATTREND — The Maison of Feline Design. Luxury cat furniture marketplace.",
+  "description": "KATTREND — The Maison of Feline Design. Holding site for a premium cat-furniture brand (full platform archived on branch archive/full-site).",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

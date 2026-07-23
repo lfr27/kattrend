@@ -114,6 +114,7 @@ Pulled from the live page, useful for the sheet:
 
 ---
 
-> **Note on the future store.** This sheet documents the current **landing page**. The parked
-> full e-commerce site (in `src/app/_onhold`) uses a different type pairing —
-> **Cormorant Garamond** (display) + **Jost** (body) — should the two ever need reconciling.
+> **Note on the future store.** This sheet documents the current **landing page**. The
+> previously-built full e-commerce site (archived on the `archive/full-site` branch) used a
+> different type pairing — **Cormorant Garamond** (display) + **Jost** (body) — should the two
+> ever need reconciling.
