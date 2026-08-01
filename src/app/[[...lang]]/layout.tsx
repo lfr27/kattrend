@@ -8,6 +8,7 @@ import {
   resolveLocale,
   type Locale,
 } from "../i18n";
+import { IS_PRODUCTION, PRODUCTION_ORIGIN, SITE_ORIGIN } from "../site";
 
 // Fonts are downloaded and self-hosted at build time (no runtime Google dependency).
 const notoSerif = Noto_Serif({
@@ -32,13 +33,13 @@ const splineMono = Spline_Sans_Mono({
   display: "swap",
 });
 
-const SITE_URL = "https://kattrend.com";
-
 // hreflang alternates shared by both locales — every page points to every version.
+// Always production: these declare where the content canonically lives, regardless
+// of which deployment is rendering them.
 const languageAlternates = {
-  da: SITE_URL + localePath("da"),
-  en: SITE_URL + localePath("en"),
-  "x-default": SITE_URL + localePath(defaultLocale),
+  da: PRODUCTION_ORIGIN + localePath("da"),
+  en: PRODUCTION_ORIGIN + localePath("en"),
+  "x-default": PRODUCTION_ORIGIN + localePath(defaultLocale),
 };
 
 export async function generateMetadata({
@@ -49,24 +50,46 @@ export async function generateMetadata({
   const { lang } = await params;
   const locale: Locale = resolveLocale(lang) ?? defaultLocale;
   const dict = dictionaries[locale];
-  const url = SITE_URL + localePath(locale);
+  const path = localePath(locale);
 
   return {
-    metadataBase: new URL(SITE_URL),
+    // Relative metadata URLs (og:image) resolve against the live origin, so a
+    // shared preview link shows that deployment's image, not production's.
+    metadataBase: new URL(SITE_ORIGIN),
     title: dict.meta.title,
     description: dict.meta.description,
     alternates: {
-      canonical: url,
+      canonical: PRODUCTION_ORIGIN + path,
       languages: languageAlternates,
     },
     openGraph: {
       type: "website",
-      url,
+      url: SITE_ORIGIN + path,
+      siteName: "Kattrend",
       title: dict.meta.ogTitle,
       description: dict.meta.ogDescription,
       locale: locale === "da" ? "da_DK" : "en_GB",
+      // Declared explicitly — without this, scrapers scrape the page and pick
+      // whatever image they find first (which was the language-switcher flag).
+      images: [
+        {
+          url: "/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: dict.meta.ogTitle,
+        },
+      ],
     },
-    robots: { index: true, follow: true },
+    twitter: {
+      card: "summary_large_image",
+      title: dict.meta.ogTitle,
+      description: dict.meta.ogDescription,
+      images: ["/og-image.png"],
+    },
+    // Previews duplicate production verbatim — keep them out of the index.
+    robots: IS_PRODUCTION
+      ? { index: true, follow: true }
+      : { index: false, follow: false },
   };
 }
 
