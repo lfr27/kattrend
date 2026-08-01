@@ -14,13 +14,15 @@ export const PRODUCTION_ORIGIN = "https://kattrend.com";
 
 const configured = process.env.NEXT_PUBLIC_SITE_ORIGIN?.trim().replace(/\/+$/, "");
 
+// Production is decided by VERCEL_ENV alone and can never be overridden by the
+// env var. Vercel's "Add Environment Variable" dialog ticks all environments by
+// default, so a preview origin leaking into production is an easy mistake — and
+// it would ship noindex + "Disallow: /" to the live site.
 export const SITE_ORIGIN =
-  configured ||
-  (process.env.VERCEL_ENV === "production"
+  process.env.VERCEL_ENV === "production"
     ? PRODUCTION_ORIGIN
-    : process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : PRODUCTION_ORIGIN);
+    : configured ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : PRODUCTION_ORIGIN);
 
 // Only the production origin should be indexed; every preview is a duplicate of it.
 export const IS_PRODUCTION = SITE_ORIGIN === PRODUCTION_ORIGIN;
