@@ -1,36 +1,26 @@
 import type { MetadataRoute } from "next";
-import { products, collections, designers, journalEntries } from "@/data/catalogue";
+import { localePath, locales } from "./i18n";
 
 const BASE = "https://kattrend.com";
 
+// Absolute URL for a locale — the default locale lives at the bare origin
+// (no trailing slash, matching the canonical), others are prefixed.
+const urlFor = (locale: (typeof locales)[number]) => {
+  const path = localePath(locale);
+  return path === "/" ? BASE : BASE + path;
+};
+
+// The site is a single landing page in two locales: English (default, "/") and
+// Danish ("/da"). The previously-built full site was removed; it's preserved on
+// the `archive/full-site` branch and in git history.
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = [
-    "",
-    "/collections",
-    "/marketplace",
-    "/designers",
-    "/journal",
-    "/authentication",
-    "/account",
-    "/wishlist",
-  ].map((path) => ({
-    url: `${BASE}${path}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly" as const,
-    priority: path === "" ? 1 : 0.8,
+  const lastModified = new Date();
+  const languages = Object.fromEntries(locales.map((l) => [l, urlFor(l)]));
+  return locales.map((l) => ({
+    url: urlFor(l),
+    lastModified,
+    changeFrequency: "weekly",
+    priority: 1,
+    alternates: { languages },
   }));
-
-  const dynamic = [
-    ...collections.map((c) => `/collections/${c.slug}`),
-    ...products.map((p) => `/product/${p.slug}`),
-    ...designers.map((d) => `/designers/${d.slug}`),
-    ...journalEntries.map((j) => `/journal/${j.slug}`),
-  ].map((path) => ({
-    url: `${BASE}${path}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly" as const,
-    priority: 0.6,
-  }));
-
-  return [...staticRoutes, ...dynamic];
 }
