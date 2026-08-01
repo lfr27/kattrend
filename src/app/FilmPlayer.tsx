@@ -1,6 +1,6 @@
 "use client";
 
-// Founder film — self-hosted MP4 (public/kat.mp4) presented with our own
+// Founder film — self-hosted MP4 (public/kattrend-intro.mp4) presented with our own
 // controls (play/pause, seek, mute + volume, fullscreen). No third-party
 // player, no external branding. The film autoplays muted and loops; the
 // controls let a visitor take over and unmute.
@@ -94,7 +94,8 @@ export default function FilmPlayer({ labels }: { labels: Dictionary["player"] })
         //muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
+        poster="/kattrend-intro-poster.jpg"
         aria-label={labels.filmAria}
         onClick={togglePlay}
         onPlay={() => setPlaying(true)}
@@ -103,7 +104,7 @@ export default function FilmPlayer({ labels }: { labels: Dictionary["player"] })
         onTimeUpdate={syncProgress}
         onLoadedMetadata={syncVolume}
       >
-        <source src="/cat.mp4" type="video/mp4" />
+        <source src="/kattrend-intro.mp4" type="video/mp4" />
         {labels.fallback}
       </video>
 
