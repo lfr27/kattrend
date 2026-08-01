@@ -1,7 +1,9 @@
 import type { MetadataRoute } from "next";
 import { localePath, locales } from "./i18n";
+import { PRODUCTION_ORIGIN } from "./site";
 
-const BASE = "https://kattrend.com";
+// Always production — a sitemap lists canonical URLs, never preview origins.
+const BASE = PRODUCTION_ORIGIN;
 
 // Absolute URL for a locale — the default locale lives at the bare origin
 // (no trailing slash, matching the canonical), others are prefixed.
