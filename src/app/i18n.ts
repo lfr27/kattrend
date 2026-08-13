@@ -17,7 +17,10 @@ export const defaultLocale: Locale = "en";
 // Anything else returns null so the route can 404.
 export function resolveLocale(segment?: string[]): Locale | null {
   if (!segment || segment.length === 0) return defaultLocale;
-  if (segment.length === 1 && (locales as readonly string[]).includes(segment[0])) {
+  if (
+    segment.length === 1 &&
+    (locales as readonly string[]).includes(segment[0])
+  ) {
     // Only non-default locales are prefixed; the default locale lives at "/", not "/en".
     return segment[0] === defaultLocale ? null : (segment[0] as Locale);
   }
@@ -88,7 +91,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
   da: {
     htmlLang: "da",
     meta: {
-      title: "Kattrend — Arkitektoniske kattemøbler, fremstillet på bestilling i Europa",
+      title:
+        "Kattrend — Arkitektoniske kattemøbler, fremstillet på bestilling i Europa",
       description:
         "Kattrend er et premium-brand inden for kattemøbler fra Aalborg, Danmark. Arkitektoniske møbler i sortbejdset eg, stål og uld — fremstillet på bestilling i Europa, skabt til at leve med.",
       ogTitle: "Kattrend — Det design, din kat fortjener",
@@ -101,8 +105,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     hero: {
       eyebrow: "Kattrend · Aalborg, Danmark",
       heading: "Et møbel, du ikke vil gemme væk.",
-      lead:
-        "Kattrend er et premium-brand inden for kattemøbler fra Danmark. Vi designer arkitektoniske møbler i sortbejdset eg, stål og uld — fremstillet på bestilling i Europa, skabt til at leve med, og konstrueret, så hver sliddel kan udskiftes hele livet.",
+      lead: "Kattrend er et premium-brand inden for kattemøbler fra Danmark. Vi designer tidløse, arkitektoniske møbler, der bringer stilfærdig elegance ind i hjemmet — gennemtænkt konstrueret til hverdagen og fremstillet med en kompromisløs dedikation til form og lang levetid.",
     },
     film: {
       eyebrow: "Introduktion fra grundlæggeren",
@@ -112,14 +115,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       eyebrow: "Derfor findes vi",
       heading: "Virkelig enestående produkter skabes aldrig alene.",
       body1:
-        "Vi bygger et brand omkring tidløst design, enestående håndværk og kompromisløs kvalitet — kattemøbler smukke nok til at komplementere et moderne hjem, og komfortable og holdbare nok til at vinde en kats loyalitet.",
+        "Vi bygger et brand omkring tidløst design, enestående håndværk og kompromisløs kvalitet. Kattemøbler smukke nok til at klæde et moderne hjem, men samtidig komfortable og holdbare nok til at vinde en kats loyalitet.",
       body2:
         "Møbler som disse skabes gennem partnerskab: med producenter, der sætter en ære i præcision, ensartethed og sans for hver detalje. Vi bringer færdig konstruktion, en klar model og langsigtet hensigt; vores partnere bringer håndværket.",
-      signature: "Møblet først, katten bagefter.",
+      signature: "Designet til hjemmet. Dedikeret til katten.",
     },
     footer: {
       backToTopAria: "Tilbage til toppen",
-      tagline: "Det design, din kat fortjener.",
+      tagline: "Skabt i partnerskab med enestående producenter.",
       location: "Kattrend · Aalborg, Danmark",
       rights: "Alle rettigheder forbeholdes.",
     },
@@ -157,8 +160,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     hero: {
       eyebrow: "Kattrend · Aalborg, Denmark",
       heading: "A piece you don’t want to hide.",
-      lead:
-        "Kattrend is a premium cat-furniture brand from Denmark. We design architectural pieces in black-stained oak, steel and wool — made to order in Europe, built to be lived with, and engineered so every wear part can be replaced for life.",
+      lead: "Kattrend is a premium cat-furniture brand from Denmark. We design timeless, architectural pieces that bring quiet elegance into the home, thoughtfully engineered for everyday life and crafted with an uncompromising commitment to form and longevity.",
     },
     film: {
       eyebrow: "Founder introduction",
@@ -168,14 +170,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       eyebrow: "Why we exist",
       heading: "Truly exceptional products are never created alone.",
       body1:
-        "We are building a brand around timeless design, exceptional craftsmanship and uncompromising quality — cat furniture beautiful enough to complement a modern home, and comfortable and durable enough to earn a cat’s loyalty.",
+        "We are building a brand around timeless design, exceptional craftsmanship, and uncompromising quality. Cat furniture beautiful enough to complement a modern home, yet comfortable and durable enough to earn a cat's loyalty.",
       body2:
-        "Pieces like that are built through partnership: with makers who take pride in precision, consistency and attention to every detail. We bring finished engineering, a clear model and long-term intent; our partners bring the craft.",
-      signature: "Furniture first, cat second.",
+        "Pieces like that are built through partnership: with makers who take pride in precision, consistency, and attention to every detail. We bring finished engineering, a clear model, and long-term intent; our partners bring the craft.",
+      signature: "Designed for the home. Dedicated to the cat.",
     },
     footer: {
       backToTopAria: "Back to top",
-      tagline: "The design your cat deserves.",
+      tagline: "Built in partnership with exceptional makers.",
       location: "Kattrend · Aalborg, Denmark",
       rights: "All rights reserved.",
     },
